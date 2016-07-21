@@ -1,6 +1,8 @@
+#Phasterate Paper Data Compilation
+
 ##Description
-This folder includes several scripts and sample data used to make graphs of the multiple
-sequence alignment along with conservation scores.
+This repo includes several scripts and all data: multiple
+sequence alignments, trees, along with conservation scores and p-values.
 
 ##Folders
 	
