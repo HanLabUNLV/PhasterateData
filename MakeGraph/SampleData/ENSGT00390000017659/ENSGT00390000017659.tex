@@ -1,0 +1,60 @@
+% Creates a printout of the given alignment file in .fa format using the texshade package.
+% This creates a "pretty" alignment graph. Additionally, this script expects a score file
+% of phyloP scores to plot against every column in our alignment. This file should contain
+% normalize P-Scores from -50.0 to 50.0 with a score as a floating point number at every
+% line with the same number of scores as there are lines in the file.
+
+% This script is used to plot conservation scores for gap envents visually alongside a DNA
+% multiple sequence alignment, therefore the fasta file should have an "extra" specie as
+% it's first specie containing no gaps. This specie will be used as the coordinate frame
+% to make sure that the column numbers are correct.
+
+% See attached files for example data.
+
+\documentclass{minimal}
+\usepackage{texshade}
+
+
+%SPECIFY ALIGNMENT LENGTH HERE!!!
+\newcommand{\alignmentLength}{1..1035}
+% Sample:
+%         \newcommand{\alignmentLength}{1..831}
+
+
+\begin{document}
+%Given name of alignment file here.
+\begin{texshade}{ENSGT00390000017659.fa}
+
+  %Length of our alignment.
+  \setends[1]{1}{\alignmentLength}
+  \shadingmode[rasmol]{functional}
+
+  %Original Colors are ugly, these are less constrasty.
+  \funcshadingstyle{C}{Purple}{White}{upper}{up}
+  \funcshadingstyle{G}{Cyan}{White}{upper}{up}
+  \funcshadingstyle{T}{Orange}{White}{upper}{up}
+
+  %Ignore the specie  as it is all N's. We  use this to have a global 
+  %coordinate frame because we don't want to skip any species.
+  \hideseq{1}
+
+  \hideconsensus{}
+  \gapchar{-}
+  \hidenumbering{}
+  \showruler{top}{1}
+  \shadeallresidues{}
+
+  %Add graph of scores based on file "normalized.txt", this file is expected
+  %to have the same number of lines as there are sites in the alignment. The
+  %values are expected to be normalized from -50.0 to 50.0.
+  \feature{bottom}{0}{\alignmentLength}{bar[-50.0,50.0]:normalized.indel.txt[Blue]}{}
+  \showfeaturename{bottom}{Indel}
+
+  \feature{top}{1}{29..33}{brace}{Start of Alignment}
+
+  \featurenamescolor{Blue}
+
+  \bargraphstretch{3}
+\end{texshade}
+
+\end{document}
